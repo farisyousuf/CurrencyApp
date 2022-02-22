@@ -1,0 +1,37 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+buildscript {
+    ext {
+        minSdkVersion = 21
+        targetSdkVersion = 31
+        compileSdkVersion = 31
+        coreKotlinExtVersion = '1.7.0'
+        appCompatVersion = '1.4.1'
+        materialVersion = '1.5.0'
+        constraintLayoutVersion = '2.1.3'
+        junitVersion = '4.13.2'
+        junitExtVersion = '1.1.3'
+        espressoCoreVersion = '3.4.0'
+        lifecycleKtxVersion = '2.4.1'
+        retrofitVersion = '2.9.0'
+        coroutinesVersion = '1.5.2'
+        coroutinesAndroidVersion = '1.5.2'
+        navigationVersion = '2.4.1'
+        daggerHiltVersion = '2.38.1'
+        hiltViewModelVersion = '1.0.0-alpha03'
+        hiltCompilerVersion = '1.0.0'
+        timberVersion = '4.7.1'
+        okhttpLoggerVersion = '4.9.3'
+    }
+}
+
+plugins {
+    id 'com.android.application' version '7.1.0' apply false
+    id 'com.android.library' version '7.1.0' apply false
+    id 'org.jetbrains.kotlin.android' version '1.5.30' apply false
+    id 'org.jetbrains.kotlin.jvm' version '1.5.30' apply false
+    id 'androidx.navigation.safeargs.kotlin' version '2.4.1' apply false
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
