@@ -76,7 +76,7 @@
             android:layout_height="32dp"
             android:background="@drawable/switch_icon"
             android:contentDescription="@null"
-            android:onClick="@{() -> viewModel.onSwitchCurrenciesClicked()}"
+            android:onClick="@{() -> viewModel.onSwitchAmountClicked()}"
             app:layout_constraintBottom_toTopOf="@+id/tilFrom"
             app:layout_constraintEnd_toStartOf="@+id/spToCurrency"
             app:layout_constraintStart_toEndOf="@+id/spFromCurrency"

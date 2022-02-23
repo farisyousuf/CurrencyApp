@@ -23,7 +23,7 @@ class ConverterViewModel @Inject constructor(private val currencyUseCase: Curren
 
     val loadingEvent = SingleLiveEvent<Boolean>()
     val errorEvent = SingleLiveEvent<ErrorEntity.Error?>()
-    val switchCurrencies = SingleLiveEvent<Unit>()
+    val switchAmount = SingleLiveEvent<Unit>()
     val goToDetailsScreen = SingleLiveEvent<Unit>()
 
     private var _currencyList = MutableLiveData<List<CurrencyEntity.Currency>>()
@@ -69,10 +69,13 @@ class ConverterViewModel @Inject constructor(private val currencyUseCase: Curren
     /**
      * Method to invoke switching of currencies event
      */
-    fun onSwitchCurrenciesClicked() {
-        switchCurrencies.call()
+    fun onSwitchAmountClicked() {
+        switchAmount.call()
     }
 
+    /**
+     * Method to navigate user to Details screen
+     */
     fun onDetailsClicked() {
         goToDetailsScreen.call()
     }
@@ -207,5 +210,19 @@ class ConverterViewModel @Inject constructor(private val currencyUseCase: Curren
      */
     fun setToCurrency(currency: CurrencyEntity.Currency) {
         _toCurrency.value = currency
+    }
+
+    /**
+     * Method to set From amount
+     */
+    fun setFromAmount(fromAmount: String) {
+        _fromAmount.value = fromAmount
+    }
+
+    /**
+     * Method to set To amount
+     */
+    fun setToAmount(toAmount: String) {
+        _toAmount.value = toAmount
     }
 }

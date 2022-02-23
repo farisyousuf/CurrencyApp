@@ -148,18 +148,14 @@ class ConverterFragment : Fragment() {
             }
         }
 
-        viewModel.switchCurrencies.observe(viewLifecycleOwner) {
-            val fromItemPosition: Int =
-                viewModel.currencyList.value?.indexOf(viewModel.fromCurrency.value) ?: -1
-            val toItemPosition: Int =
-                viewModel.currencyList.value?.indexOf(viewModel.toCurrency.value) ?: -1
-            clearAmounts()
-            if (fromItemPosition != -1) {
-                binding.spToCurrency.setSelection(fromItemPosition)
-            }
-            if (toItemPosition != -1) {
-                binding.spFromCurrency.setSelection(toItemPosition)
-            }
+        viewModel.switchAmount.observe(viewLifecycleOwner) {
+            val fromAmount = binding.etFrom.text.toString()
+            val toAmount = binding.etTo.text.toString()
+            viewModel.setFromAmount(toAmount)
+            viewModel.setToAmount(fromAmount)
+            //Here, the amount in to field will be
+            //populated tp from, so we use toAmount
+            viewModel.convert(toAmount)
         }
 
         viewModel.goToDetailsScreen.observe(viewLifecycleOwner) {
@@ -169,6 +165,7 @@ class ConverterFragment : Fragment() {
                     "Details only available when From currency is $DEFAULT_CURRENCY",
                     Toast.LENGTH_LONG
                 ).show()
+                return@observe
             }
             findNavController().navigate(
                 ConverterFragmentDirections.actionConverterFragmentToDetailsFragment(
