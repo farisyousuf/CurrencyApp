@@ -21,6 +21,7 @@ buildscript {
         hiltCompilerVersion = '1.0.0'
         timberVersion = '4.7.1'
         okhttpLoggerVersion = '4.9.3'
+        javaXVersion = '1'
     }
 }
 
