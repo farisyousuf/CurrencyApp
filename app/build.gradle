@@ -81,6 +81,10 @@ dependencies {
     //Okhttp Logger
     implementation "com.squareup.okhttp3:logging-interceptor:$okhttpLoggerVersion"
 
+    //Binding Adapter
+    implementation 'me.tatarka.bindingcollectionadapter2:bindingcollectionadapter:4.0.0'
+    implementation 'me.tatarka.bindingcollectionadapter2:bindingcollectionadapter-recyclerview:4.0.0'
+
     testImplementation "junit:junit:$junitVersion"
     androidTestImplementation "androidx.test.ext:junit:$junitExtVersion"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espressoCoreVersion"

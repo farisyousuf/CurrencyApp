@@ -8,9 +8,13 @@ interface CurrencyUseCase {
     fun getSupportedCurrencies(): Flow<ResultState<CurrencyEntity.CurrencyList>>
 
     fun getCurrencyConversion(
-        dateString: String,
         fromCurrency: String,
-        toCurrency: String,
-        amount: Double
+        toCurrency: String
     ): Flow<ResultState<CurrencyEntity.ConversionResult>>
+
+    fun getCurrencyConversionByDays(
+        days: Int,
+        fromCurrency: String,
+        toCurrency: String
+    ): Flow<ResultState<List<CurrencyEntity.ConversionResult>>>
 }

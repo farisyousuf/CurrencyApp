@@ -25,6 +25,7 @@ fun CurrencyDto.ConversionResultDto.map(): CurrencyEntity.ConversionResult {
     return CurrencyEntity.ConversionResult(
         fromCurrency = fromCurrency ?: "",
         currencyListWithRates = currencyList,
+        dateString = dateString ?: "",
         if (this.success == true) null else error?.map()
     )
 }

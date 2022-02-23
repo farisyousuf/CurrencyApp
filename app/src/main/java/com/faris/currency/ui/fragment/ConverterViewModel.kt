@@ -24,6 +24,7 @@ class ConverterViewModel @Inject constructor(private val currencyUseCase: Curren
     val loadingEvent = SingleLiveEvent<Boolean>()
     val errorEvent = SingleLiveEvent<ErrorEntity.Error?>()
     val switchCurrencies = SingleLiveEvent<Unit>()
+    val goToDetailsScreen = SingleLiveEvent<Unit>()
 
     private var _currencyList = MutableLiveData<List<CurrencyEntity.Currency>>()
     val currencyList: LiveData<List<CurrencyEntity.Currency>> = _currencyList
@@ -72,6 +73,10 @@ class ConverterViewModel @Inject constructor(private val currencyUseCase: Curren
         switchCurrencies.call()
     }
 
+    fun onDetailsClicked() {
+        goToDetailsScreen.call()
+    }
+
     /**
      * Method to convert amount
      * amountString: The amount from input field
@@ -111,13 +116,11 @@ class ConverterViewModel @Inject constructor(private val currencyUseCase: Curren
         amount: Double,
         isToAmount: Boolean = false
     ) {
-
+        showLoading(true)
         viewModelScope.launch {
             currencyUseCase.getCurrencyConversion(
-                "${DateFormat.format("yyyy-MM-dd", Date())}",
                 fromCurrency,
-                toCurrency,
-                amount
+                toCurrency
             ).collect { result ->
                 when (result) {
                     is ResultState.Success -> {

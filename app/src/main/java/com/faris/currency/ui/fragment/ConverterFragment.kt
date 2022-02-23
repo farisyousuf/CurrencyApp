@@ -5,7 +5,9 @@ import android.view.*
 import android.view.inputmethod.EditorInfo
 import android.widget.*
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.faris.currency.databinding.FragmentConverterBinding
 import com.faris.currency.util.extensions.hideKeyboard
 import com.faris.currency.util.extensions.onImeActionDone
@@ -16,12 +18,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class ConverterFragment : Fragment() {
     private var _binding: FragmentConverterBinding? = null
     private val binding get() = _binding!!
-    private lateinit var viewModel: ConverterViewModel
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        viewModel = ViewModelProvider(requireActivity())[ConverterViewModel::class.java]
-    }
+    private val viewModel: ConverterViewModel by viewModels()
 
     private fun clearAmounts() {
         hideKeyboard(requireActivity())
@@ -163,6 +160,22 @@ class ConverterFragment : Fragment() {
             if (toItemPosition != -1) {
                 binding.spFromCurrency.setSelection(toItemPosition)
             }
+        }
+
+        viewModel.goToDetailsScreen.observe(viewLifecycleOwner) {
+            if (viewModel.fromCurrency.value?.code != DEFAULT_CURRENCY) {
+                Toast.makeText(
+                    requireContext(),
+                    "Details only available when From currency is $DEFAULT_CURRENCY",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+            findNavController().navigate(
+                ConverterFragmentDirections.actionConverterFragmentToDetailsFragment(
+                    fromCurrency = viewModel.fromCurrency.value?.code ?: "",
+                    toCurrency = viewModel.toCurrency.value?.code ?: ""
+                )
+            )
         }
     }
 

@@ -12,11 +12,17 @@ class CurrencyUseCaseImpl @Inject constructor(private val currencyRepository: Cu
     }
 
     override fun getCurrencyConversion(
-        dateString: String,
         fromCurrency: String,
-        toCurrency: String,
-        amount: Double
+        toCurrency: String
     ): Flow<ResultState<CurrencyEntity.ConversionResult>> {
-        return currencyRepository.getCurrencyConversion(dateString, fromCurrency, toCurrency, amount)
+        return currencyRepository.getCurrencyConversion(fromCurrency, toCurrency)
+    }
+
+    override fun getCurrencyConversionByDays(
+        days: Int,
+        fromCurrency: String,
+        toCurrency: String
+    ): Flow<ResultState<List<CurrencyEntity.ConversionResult>>> {
+        return currencyRepository.getCurrencyConversionByDays(days, fromCurrency, toCurrency)
     }
 }

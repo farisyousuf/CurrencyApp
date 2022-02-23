@@ -13,6 +13,7 @@ sealed class CurrencyEntity {
     data class ConversionResult(
         val fromCurrency: String,
         val currencyListWithRates: List<Currency>,
+        val dateString: String,
         val error: ErrorEntity.Error? = null
     ) : CurrencyEntity()
 }

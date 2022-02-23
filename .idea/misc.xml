@@ -6,6 +6,8 @@
         <entry key="../../../Library/Android/sdk/platforms/android-31/data/res/layout/simple_spinner_item.xml" value="0.19610507246376813" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_converter.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_details.xml" value="0.19610507246376813" />
+        <entry key="app/src/main/res/layout/rates_item.xml" value="0.1" />
       </map>
     </option>
   </component>
