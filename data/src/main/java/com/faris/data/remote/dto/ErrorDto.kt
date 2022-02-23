@@ -15,6 +15,8 @@ sealed class ErrorDto {
         @SerializedName("code")
         val code: Int? = null,
         @SerializedName("info")
-        val message: String? = ""
+        val message: String? = "",
+        @SerializedName("type")
+        val type: String? = ""
     )
 }

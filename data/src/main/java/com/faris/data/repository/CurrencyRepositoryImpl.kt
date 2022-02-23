@@ -15,4 +15,15 @@ class CurrencyRepositoryImpl @Inject constructor(private val currencyApi: Curren
     override fun getSupportedCurrencies(): Flow<ResultState<CurrencyEntity.CurrencyList>> = flow {
         emit(apiCall { currencyApi.getCurrencies().map() })
     }
+
+    override fun getCurrencyConversion(
+        dateString: String,
+        fromCurrency: String,
+        toCurrency: String,
+        amount: Double
+    ): Flow<ResultState<CurrencyEntity.ConversionResult>> = flow {
+        emit(apiCall {
+            currencyApi.convert(date = dateString, from = fromCurrency, to = toCurrency).map()
+        })
+    }
 }

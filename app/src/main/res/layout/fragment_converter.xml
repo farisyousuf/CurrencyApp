@@ -7,6 +7,7 @@
         <variable
             name="viewModel"
             type="com.faris.currency.ui.fragment.ConverterViewModel" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -75,6 +76,7 @@
             android:layout_height="32dp"
             android:background="@drawable/switch_icon"
             android:contentDescription="@null"
+            android:onClick="@{() -> viewModel.onSwitchCurrenciesClicked()}"
             app:layout_constraintBottom_toTopOf="@+id/tilFrom"
             app:layout_constraintEnd_toStartOf="@+id/spToCurrency"
             app:layout_constraintStart_toEndOf="@+id/spFromCurrency"
@@ -95,8 +97,9 @@
                 android:id="@+id/etFrom"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:imeOptions="actionDone"
                 android:inputType="numberDecimal"
-                android:text="@={viewModel.fromAmount}" />
+                android:text="1" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -114,8 +117,9 @@
                 android:id="@+id/etTo"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:imeOptions="actionDone"
                 android:inputType="numberDecimal"
-                android:text="@={viewModel.toAmount}" />
+                android:text="1" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -126,5 +130,15 @@
             android:text="@string/details"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tilFrom" />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

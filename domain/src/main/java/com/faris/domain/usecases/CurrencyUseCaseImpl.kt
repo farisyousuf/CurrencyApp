@@ -10,4 +10,13 @@ class CurrencyUseCaseImpl @Inject constructor(private val currencyRepository: Cu
     override fun getSupportedCurrencies(): Flow<ResultState<CurrencyEntity.CurrencyList>> {
         return currencyRepository.getSupportedCurrencies()
     }
+
+    override fun getCurrencyConversion(
+        dateString: String,
+        fromCurrency: String,
+        toCurrency: String,
+        amount: Double
+    ): Flow<ResultState<CurrencyEntity.ConversionResult>> {
+        return currencyRepository.getCurrencyConversion(dateString, fromCurrency, toCurrency, amount)
+    }
 }
