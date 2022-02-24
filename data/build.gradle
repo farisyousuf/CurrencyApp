@@ -52,6 +52,11 @@ dependencies {
     kapt("com.google.dagger:hilt-android-compiler:$daggerHiltVersion")
 
     testImplementation "junit:junit:$junitVersion"
+    testImplementation "androidx.arch.core:core-testing:$archCoreTestVersion"
+    testImplementation "org.mockito:mockito-core:$mockitoCoreVersion"
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$testKotlinxCoroutines"
+    testImplementation "com.google.truth:truth:$truthVersion"
+
     androidTestImplementation "androidx.test.ext:junit:$junitExtVersion"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espressoCoreVersion"
 }

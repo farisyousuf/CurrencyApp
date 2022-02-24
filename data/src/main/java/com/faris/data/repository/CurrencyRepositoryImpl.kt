@@ -4,6 +4,7 @@ import android.text.format.DateFormat
 import com.faris.data.mapper.dtotoentity.map
 import com.faris.data.remote.api.CurrencyApi
 import com.faris.data.util.Constants.SERVER_DATE_FORMAT
+import com.faris.data.util.serverFormattedDateString
 import com.faris.domain.common.ResultState
 import com.faris.domain.entity.response.ErrorEntity
 import com.faris.domain.entity.response.currency.CurrencyEntity
@@ -26,12 +27,9 @@ class CurrencyRepositoryImpl @Inject constructor(private val currencyApi: Curren
     ): Flow<ResultState<CurrencyEntity.ConversionResult>> = flow {
         emit(apiCall {
             currencyApi.convert(
-                date = "${
-                    DateFormat.format(
-                        SERVER_DATE_FORMAT,
-                        Calendar.getInstance().time
-                    )
-                }", from = fromCurrency, to = toCurrency
+                date = Calendar.getInstance().time.serverFormattedDateString(),
+                from = fromCurrency,
+                to = toCurrency
             ).map()
         })
     }
