@@ -10,6 +10,7 @@ import android.widget.AdapterView
 import android.widget.EditText
 import android.widget.Spinner
 import android.widget.TextView
+import kotlin.math.round
 
 fun hideKeyboard(activity: Activity?) {
     val view = activity?.findViewById<View>(android.R.id.content)
@@ -47,4 +48,10 @@ fun EditText.onImeActionDone(activity: Activity?, onImeActionDone: (view: TextVi
             return false
         }
     })
+}
+
+fun Double.roundTo(decimals: Int): Double {
+    var multiplier = 1.0
+    repeat(decimals) { multiplier *= 10 }
+    return round(this * multiplier) / multiplier
 }

@@ -1,5 +1,6 @@
 package com.faris.currency.util
 
+import com.faris.currency.util.extensions.roundTo
 import com.faris.domain.entity.response.currency.CurrencyEntity
 
 object CurrencyUtil {
@@ -12,10 +13,10 @@ object CurrencyUtil {
         val fromCurrencyEuroRate: Double? = currencyList.find { it.code == fromCurrency }?.rate
         val toCurrencyEuroRate: Double? = currencyList.find { it.code == toCurrency }?.rate
 
-        if (null == fromCurrencyEuroRate || null == toCurrencyEuroRate) {
-            return null
+        return if (null == fromCurrencyEuroRate || null == toCurrencyEuroRate) {
+            null
         } else {
-            return toCurrencyEuroRate / fromCurrencyEuroRate * amount
+            (toCurrencyEuroRate / fromCurrencyEuroRate * amount).roundTo(3)
         }
     }
 }

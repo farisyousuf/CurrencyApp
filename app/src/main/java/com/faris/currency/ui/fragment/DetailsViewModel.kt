@@ -8,7 +8,6 @@ import com.faris.currency.BR
 import com.faris.currency.R
 import com.faris.currency.arc.SingleLiveEvent
 import com.faris.currency.ui.models.RateItemViewModel
-import com.faris.currency.util.Constants
 import com.faris.currency.util.Constants.HISTORY_DATE_SIZE
 import com.faris.currency.util.Constants.getPopularCurrencies
 import com.faris.currency.util.CurrencyUtil
@@ -19,7 +18,6 @@ import com.faris.domain.usecases.CurrencyUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.zip
 import kotlinx.coroutines.launch
 import me.tatarka.bindingcollectionadapter2.ItemBinding
 import javax.inject.Inject
@@ -31,7 +29,7 @@ class DetailsViewModel @Inject constructor(private val useCase: CurrencyUseCase)
     val errorEvent = SingleLiveEvent<ErrorEntity.Error?>()
     var items = ObservableArrayList<RateItemViewModel>()
     var rateItems = ObservableArrayList<CurrencyEntity.Currency>()
-    var chartItems = MutableLiveData<ArrayList<CurrencyEntity.ConversionResult>>()
+    var chartItems = MutableLiveData<ArrayList<RateItemViewModel>>()
     val itemBinding: ItemBinding<RateItemViewModel> =
         ItemBinding.of(
             BR.viewModel,
@@ -65,7 +63,7 @@ class DetailsViewModel @Inject constructor(private val useCase: CurrencyUseCase)
                 when (historyData) {
                     is ResultState.Success -> {
                         //Calculating the rate and adding it to view
-                        items.addAll(historyData.data.map {
+                        val historyRateItems = historyData.data.map {
                             val convertedToAmount = CurrencyUtil.getConvertedAmount(
                                 fromCurrency,
                                 toCurrency,
@@ -79,8 +77,9 @@ class DetailsViewModel @Inject constructor(private val useCase: CurrencyUseCase)
                             )
                         }.filter {
                             it.rate != null
-                        })
-                        chartItems.value = ArrayList(historyData.data)
+                        }
+                        items.addAll(historyRateItems)
+                        chartItems.value = ArrayList(historyRateItems)
                     }
                     is ResultState.Error -> {
                         showError(historyData.error)

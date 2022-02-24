@@ -11,7 +11,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import com.faris.currency.databinding.FragmentDetailsBinding
-import com.faris.domain.entity.response.currency.CurrencyEntity
+import com.faris.currency.ui.models.RateItemViewModel
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
@@ -55,7 +55,7 @@ class DetailsFragment : Fragment() {
         }
     }
 
-    private fun updateChart(ratesResponseList: ArrayList<CurrencyEntity.ConversionResult>) {
+    private fun updateChart(ratesResponseList: ArrayList<RateItemViewModel>) {
         lifecycleScope.launch(Dispatchers.Default) {
             val entries = mutableListOf<Entry>()
 
@@ -63,7 +63,7 @@ class DetailsFragment : Fragment() {
                 entries.add(
                     Entry(
                         entries.count().toFloat(),
-                        (ratesResponse.currencyListWithRates.find { it.code == args.toCurrency }?.rate ?: 0f).toFloat(),
+                        ratesResponse.rate?.toFloat() ?: 0f,
                         args.toCurrency
                     )
                 )
