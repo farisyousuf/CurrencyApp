@@ -125,22 +125,18 @@ class ConverterViewModel @Inject constructor(private val currencyUseCase: Curren
                 when (result) {
                     is ResultState.Success -> {
                         showLoading(false)
-                        if (!checkHasError(result.data.error)) {
-                            result.data.error?.let {
-                                clearAmounts()
-                                errorEvent.value = result.data.error
-                                return@collect
-                            }
-                            result.data.currencyListWithRates.find { it.code == toCurrency }?.rate?.let { rate ->
-                                if(isToAmount) {
-                                    _fromAmount.value = getResultAmount(rate, amount)
-                                } else {
-                                    _toAmount.value = getResultAmount(rate, amount)
-                                }
-                            } ?: clearAmounts()
-                        } else {
+                        result.data.error?.let {
                             clearAmounts()
+                            errorEvent.value = result.data.error
+                            return@collect
                         }
+                        result.data.currencyListWithRates.find { it.code == toCurrency }?.rate?.let { rate ->
+                            if(isToAmount) {
+                                _fromAmount.value = getResultAmount(rate, amount)
+                            } else {
+                                _toAmount.value = getResultAmount(rate, amount)
+                            }
+                        } ?: clearAmounts()
                     }
                     is ResultState.Error -> {
                         showLoading(false)
@@ -150,16 +146,6 @@ class ConverterViewModel @Inject constructor(private val currencyUseCase: Curren
                 }
             }
         }
-    }
-
-    /**
-     * Checking if the response returned contains error
-     */
-    private fun checkHasError(errorEntity: ErrorEntity.Error?): Boolean {
-        return errorEntity?.let {
-            errorEvent.value = it
-            true
-        } ?: false
     }
 
     /**

@@ -45,15 +45,6 @@ fun getDummyConversionResult(
     )
 }
 
-fun getDummyConversionResultWithError(): CurrencyEntity.ConversionResult {
-    return CurrencyEntity.ConversionResult(
-        fromCurrency = "",
-        currencyListWithRates = listOf(),
-        dateString = "",
-        error = ErrorEntity.Error(errorCode = 105, errorMessage = "Restricted Access")
-    )
-}
-
 fun getDummyConversionHistoryResult(
     fromCurrency: String,
     toCurrency: String

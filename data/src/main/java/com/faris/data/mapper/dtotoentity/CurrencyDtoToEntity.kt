@@ -12,6 +12,7 @@ fun CurrencyDto.CurrencyList.map(): CurrencyEntity.CurrencyList {
         CurrencyEntity.Currency(it.key, it.value.asString)
     }
     return CurrencyEntity.CurrencyList(
+        isSuccess ?: false,
         currencyList = currencyList,
         if (this.isSuccess == true) null else error?.map()
     )
@@ -23,6 +24,7 @@ fun CurrencyDto.ConversionResultDto.map(): CurrencyEntity.ConversionResult {
         CurrencyEntity.Currency(code = it.key, rate = it.value.asDouble, value = it.key)
     }
     return CurrencyEntity.ConversionResult(
+        isSuccess = success ?: false,
         fromCurrency = fromCurrency ?: "",
         currencyListWithRates = currencyList,
         dateString = dateString ?: "",

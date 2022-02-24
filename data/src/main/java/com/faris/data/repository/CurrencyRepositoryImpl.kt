@@ -20,20 +20,40 @@ class CurrencyRepositoryImpl @Inject constructor(private val currencyApi: Curren
     BaseRepositoryImpl(),
     CurrencyRepository {
     override fun getSupportedCurrencies(): Flow<ResultState<CurrencyEntity.CurrencyList>> = flow {
-        emit(apiCall { currencyApi.getCurrencies().map() })
+        val result = apiCall { currencyApi.getCurrencies().map() }
+        if(result is ResultState.Success) {
+            if(!result.data.isSuccess) {
+                emit(ResultState.Error(ErrorEntity.Error(
+                    errorCode = result.data.error?.errorCode,
+                    errorMessage = result.data.error?.errorMessage
+                )))
+            } else {
+                emit(result)
+            }
+        }
     }.flowOn(Dispatchers.IO)
 
     override fun getCurrencyConversion(
         fromCurrency: String,
         toCurrency: String
     ): Flow<ResultState<CurrencyEntity.ConversionResult>> = flow {
-        emit(apiCall {
+        val result = apiCall {
             currencyApi.convert(
                 date = Calendar.getInstance().time.serverFormattedDateString(),
                 from = fromCurrency,
                 to = toCurrency
             ).map()
-        })
+        }
+        if(result is ResultState.Success) {
+            if(!result.data.isSuccess) {
+                emit(ResultState.Error(ErrorEntity.Error(
+                    errorCode = result.data.error?.errorCode,
+                    errorMessage = result.data.error?.errorMessage
+                )))
+            } else {
+                emit(result)
+            }
+        }
     }.flowOn(Dispatchers.IO)
 
     override fun getCurrencyConversionByDays(

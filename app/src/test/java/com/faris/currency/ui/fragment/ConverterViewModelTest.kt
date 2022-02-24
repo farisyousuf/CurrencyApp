@@ -124,8 +124,8 @@ class ConverterViewModelTest : BaseViewModelTest() {
         converterViewModel.setFromCurrency(CurrencyEntity.Currency(code = "AED", value = "AED"))
         converterViewModel.setToCurrency(CurrencyEntity.Currency(code = "USD", value = "USD"))
         //GIVEN
-        val dummyResult = getDummyConversionResultWithError()
-        val flowCurrenciesRates = flowOf(ResultState.Success(dummyResult))
+        val dummyResult = ResultState.Error<CurrencyEntity.ConversionResult>(getDummyError())
+        val flowCurrenciesRates = flowOf(dummyResult)
         Mockito.doReturn(flowCurrenciesRates).`when`(currencyUseCase)
             .getCurrencyConversion("USD", "AED")
         converterViewModel.convert(toAmount.toString(), isToAmountChanged = true)
