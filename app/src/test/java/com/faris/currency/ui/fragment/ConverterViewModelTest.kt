@@ -46,7 +46,7 @@ class ConverterViewModelTest : BaseViewModelTest() {
     @Test
     fun `given error when getCurrencyList should return error`() = runBlockingMainTest {
         //GIVEN
-        val flowCurrenciesError = flowOf(getDummyError())
+        val flowCurrenciesError = flowOf(getDummyErrorResultStateCurrencyList())
 
         //WHEN
         Mockito.doReturn(flowCurrenciesError).`when`(currencyUseCase).getSupportedCurrencies()

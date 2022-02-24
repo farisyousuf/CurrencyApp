@@ -1,15 +1,16 @@
 package com.faris.currency.ui.fragment
 
 import android.os.Bundle
-import android.view.*
-import android.view.inputmethod.EditorInfo
-import android.widget.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.view.WindowManager
+import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.faris.currency.databinding.FragmentConverterBinding
-import com.faris.currency.util.extensions.hideKeyboard
 import com.faris.currency.util.extensions.onImeActionDone
 import com.faris.currency.util.extensions.onItemSelected
 import dagger.hilt.android.AndroidEntryPoint

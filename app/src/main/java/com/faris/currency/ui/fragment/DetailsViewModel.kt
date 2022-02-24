@@ -1,16 +1,15 @@
 package com.faris.currency.ui.fragment
 
 import androidx.databinding.ObservableArrayList
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.faris.currency.BR
 import com.faris.currency.R
 import com.faris.currency.arc.SingleLiveEvent
 import com.faris.currency.ui.models.RateItemViewModel
+import com.faris.currency.util.Constants.HISTORY_DATE_SIZE
 import com.faris.domain.common.ResultState
 import com.faris.domain.entity.response.ErrorEntity
-import com.faris.domain.entity.response.currency.CurrencyEntity
 import com.faris.domain.usecases.CurrencyUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
@@ -37,7 +36,7 @@ class DetailsViewModel @Inject constructor(private val useCase: CurrencyUseCase)
         showLoading(true)
         viewModelScope.launch {
             useCase.getCurrencyConversionByDays(
-                30,
+                HISTORY_DATE_SIZE,
                 fromCurrency,
                 toCurrency
             ).collect { result ->
