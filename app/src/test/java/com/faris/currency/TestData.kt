@@ -1,5 +1,6 @@
 package com.faris.currency
 
+import com.faris.currency.util.Constants
 import com.faris.domain.common.ResultState
 import com.faris.domain.entity.response.ErrorEntity
 import com.faris.domain.entity.response.currency.CurrencyEntity
@@ -32,14 +33,21 @@ fun getDummyError(): ErrorEntity.Error? {
     )
 }
 
+fun getFinalPopularCurrencyListTestData(fromCurrency: String, toCurrency: String) : ArrayList<String>{
+    val popularList = Constants.getPopularCurrencies()
+    popularList.add(fromCurrency)
+    popularList.add(toCurrency)
+    return popularList
+}
 fun getDummyConversionResult(
     fromCurrency: String,
     toCurrency: String
 ): CurrencyEntity.ConversionResult {
     return CurrencyEntity.ConversionResult(
-        fromCurrency = fromCurrency,
+        fromCurrency = "EUR",
         currencyListWithRates = listOf(
             CurrencyEntity.Currency(code = toCurrency, value = toCurrency, rate = 12.5),
+            CurrencyEntity.Currency(code = fromCurrency, value = fromCurrency, rate = 0.5),
         ),
         dateString = "2022-06-02"
     )
@@ -51,16 +59,18 @@ fun getDummyConversionHistoryResult(
 ): List<CurrencyEntity.ConversionResult> {
     return listOf(
         CurrencyEntity.ConversionResult(
-            fromCurrency = fromCurrency,
+            fromCurrency = "EUR",
             currencyListWithRates = listOf(
                 CurrencyEntity.Currency(code = toCurrency, value = toCurrency, rate = 12.5),
+                CurrencyEntity.Currency(code = fromCurrency, value = fromCurrency, rate = 10.5),
             ),
             dateString = "2022-06-02"
         ),
         CurrencyEntity.ConversionResult(
-            fromCurrency = fromCurrency,
+            fromCurrency = "EUR",
             currencyListWithRates = listOf(
                 CurrencyEntity.Currency(code = toCurrency, value = toCurrency, rate = 12.51),
+                CurrencyEntity.Currency(code = fromCurrency, value = fromCurrency, rate = 10.49),
             ),
             dateString = "2022-06-01"
         )
