@@ -150,14 +150,6 @@ class ConverterFragment : Fragment() {
         }
 
         viewModel.goToDetailsScreen.observe(viewLifecycleOwner) {
-            if (viewModel.fromCurrency.value?.code != DEFAULT_CURRENCY) {
-                Toast.makeText(
-                    requireContext(),
-                    "Details only available when From currency is $DEFAULT_CURRENCY",
-                    Toast.LENGTH_LONG
-                ).show()
-                return@observe
-            }
             findNavController().navigate(
                 ConverterFragmentDirections.actionConverterFragmentToDetailsFragment(
                     fromCurrency = viewModel.fromCurrency.value?.code ?: "",

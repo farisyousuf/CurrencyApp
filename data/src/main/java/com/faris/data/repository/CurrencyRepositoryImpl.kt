@@ -67,7 +67,7 @@ class CurrencyRepositoryImpl @Inject constructor(private val currencyApi: Curren
     override fun getCurrencyConversionByDays(
         days: Int,
         fromCurrency: String,
-        toCurrency: String
+        toCurrency: List<String>
     ): Flow<ResultState<List<CurrencyEntity.ConversionResult>>> = flow {
         val start = Calendar.getInstance()
         //Fixed issue where extra item was showing
@@ -83,7 +83,7 @@ class CurrencyRepositoryImpl @Inject constructor(private val currencyApi: Curren
                 currencyApi.convert(
                     date = "${DateFormat.format(SERVER_DATE_FORMAT, start.time)}",
                     from = fromCurrency,
-                    to = toCurrency
+                    to = toCurrency.joinToString(",") {it}
                 )
             }
             if (result is ResultState.Success) {

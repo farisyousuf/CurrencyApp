@@ -12,6 +12,6 @@ interface CurrencyRepository {
     fun getCurrencyConversionByDays(
         days: Int,
         fromCurrency: String,
-        toCurrency: String
+        toCurrency: List<String>
     ): Flow<ResultState<List<CurrencyEntity.ConversionResult>>>
 }

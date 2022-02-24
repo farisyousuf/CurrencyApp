@@ -21,7 +21,7 @@ class CurrencyUseCaseImpl @Inject constructor(private val currencyRepository: Cu
     override fun getCurrencyConversionByDays(
         days: Int,
         fromCurrency: String,
-        toCurrency: String
+        toCurrency: List<String>
     ): Flow<ResultState<List<CurrencyEntity.ConversionResult>>> {
         return currencyRepository.getCurrencyConversionByDays(days, fromCurrency, toCurrency)
     }

@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.faris.currency.arc.SingleLiveEvent
+import com.faris.currency.util.CurrencyUtil
 import com.faris.domain.common.ResultState
 import com.faris.domain.entity.response.ErrorEntity
 import com.faris.domain.entity.response.currency.CurrencyEntity
@@ -117,26 +118,32 @@ class ConverterViewModel @Inject constructor(private val currencyUseCase: Curren
         isToAmount: Boolean = false
     ) {
         showLoading(true)
+        //Here we pass the base currency always
+        //as EUR and the converted amount is calculated
+        //based on its results
         viewModelScope.launch {
             currencyUseCase.getCurrencyConversion(
-                fromCurrency,
-                listOf(toCurrency)
+                "EUR",
+                listOf(fromCurrency, toCurrency)
             ).collect { result ->
                 when (result) {
                     is ResultState.Success -> {
                         showLoading(false)
-                        result.data.error?.let {
-                            clearAmounts()
-                            errorEvent.value = result.data.error
-                            return@collect
-                        }
-                        result.data.currencyListWithRates.find { it.code == toCurrency }?.rate?.let { rate ->
+                        val convertedAmount = CurrencyUtil.getConvertedAmount(
+                            fromCurrency,
+                            toCurrency,
+                            result.data.currencyListWithRates,
+                            amount
+                        )
+                        if (null != convertedAmount) {
                             if(isToAmount) {
-                                _fromAmount.value = getResultAmount(rate, amount)
+                                _fromAmount.value = convertedAmount.toString()
                             } else {
-                                _toAmount.value = getResultAmount(rate, amount)
+                                _toAmount.value = convertedAmount.toString()
                             }
-                        } ?: clearAmounts()
+                        } else {
+                            showError(ErrorEntity.Error(errorCode = "Error", errorMessage = "Something Went wrong"))
+                        }
                     }
                     is ResultState.Error -> {
                         showLoading(false)
@@ -159,13 +166,6 @@ class ConverterViewModel @Inject constructor(private val currencyUseCase: Curren
     private fun resetAmount() {
         setFromAmount("1")
         setToAmount("1")
-    }
-
-    /**
-     * Returns the String value containing the converted amount
-     */
-    private fun getResultAmount(rate: Double?, amount: Double): String {
-        return "${rate?.times(amount) ?: ""}"
     }
 
     /**

@@ -9,7 +9,7 @@ sealed class CurrencyEntity {
         val error: ErrorEntity.Error? = null
     ) : CurrencyEntity()
 
-    data class Currency(val code: String, val value: String, val rate: Double? = null) : CurrencyEntity() {
+    data class Currency(val code: String, val value: String, var rate: Double? = null) : CurrencyEntity() {
         fun getNonNullRateString() : String {
             return rate.toString() ?: ""
         }
