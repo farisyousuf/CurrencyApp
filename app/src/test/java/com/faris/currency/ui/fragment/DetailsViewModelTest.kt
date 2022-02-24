@@ -45,6 +45,22 @@ class DetailsViewModelTest : BaseViewModelTest() {
     }
 
     @Test
+    fun `given conversion results when getHistory should populate chart list`() = runBlockingMainTest {
+        val fromCurrency = "AED"
+        val toCurrency = "AED"
+        //GIVEN
+        val flowCurrencies = flowOf(ResultState.Success(getDummyConversionHistoryResult(fromCurrency, toCurrency)))
+
+        //WHEN
+        Mockito.doReturn(flowCurrencies).`when`(currencyUseCase).getCurrencyConversionByDays(HISTORY_DATE_SIZE, fromCurrency, toCurrency)
+
+        viewModel.getHistory(fromCurrency, toCurrency)
+        val chartItems = viewModel.chartItems.getOrAwaitValueTest()
+        //THEN
+        Truth.assertThat(chartItems.size).isGreaterThan(1)
+    }
+
+    @Test
     fun `given error result when getHistory should return error`() = runBlockingMainTest {
         val fromCurrency = "AED"
         val toCurrency = "AED"

@@ -64,7 +64,7 @@ class DetailsFragment : Fragment() {
                     Entry(
                         entries.count().toFloat(),
                         (ratesResponse.currencyListWithRates.find { it.code == args.toCurrency }?.rate ?: 0f).toFloat(),
-                        ratesResponse.fromCurrency
+                        args.toCurrency
                     )
                 )
             }
