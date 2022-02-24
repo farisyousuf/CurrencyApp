@@ -17,7 +17,6 @@ interface CurrencyApi {
     ): CurrencyDto.ConversionResultDto
 
     companion object {
-//        private const val API_KEY = "dd08bd55bf9cebd6d739ab85a3e88426"
-        private const val API_KEY = "bbfdbe4e429a4e816b2aba571d4188f1"
+        private const val API_KEY = "ccad955f906284ea70951f4bc455c478"
     }
 }

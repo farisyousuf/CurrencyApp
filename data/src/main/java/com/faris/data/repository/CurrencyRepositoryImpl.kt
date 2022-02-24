@@ -9,8 +9,10 @@ import com.faris.domain.common.ResultState
 import com.faris.domain.entity.response.ErrorEntity
 import com.faris.domain.entity.response.currency.CurrencyEntity
 import com.faris.domain.repository.CurrencyRepository
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import java.util.*
 import javax.inject.Inject
 
@@ -19,7 +21,7 @@ class CurrencyRepositoryImpl @Inject constructor(private val currencyApi: Curren
     CurrencyRepository {
     override fun getSupportedCurrencies(): Flow<ResultState<CurrencyEntity.CurrencyList>> = flow {
         emit(apiCall { currencyApi.getCurrencies().map() })
-    }
+    }.flowOn(Dispatchers.IO)
 
     override fun getCurrencyConversion(
         fromCurrency: String,
@@ -32,7 +34,7 @@ class CurrencyRepositoryImpl @Inject constructor(private val currencyApi: Curren
                 to = toCurrency
             ).map()
         })
-    }
+    }.flowOn(Dispatchers.IO)
 
     override fun getCurrencyConversionByDays(
         days: Int,
@@ -63,5 +65,5 @@ class CurrencyRepositoryImpl @Inject constructor(private val currencyApi: Curren
         } else {
             emit(ResultState.Error(ErrorEntity.Error("No data", errorMessage = "No data")))
         }
-    }
+    }.flowOn(Dispatchers.IO)
 }

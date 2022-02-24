@@ -1,6 +1,7 @@
 package com.faris.currency.ui.fragment
 
 import androidx.databinding.ObservableArrayList
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.faris.currency.BR
@@ -10,6 +11,7 @@ import com.faris.currency.ui.models.RateItemViewModel
 import com.faris.currency.util.Constants.HISTORY_DATE_SIZE
 import com.faris.domain.common.ResultState
 import com.faris.domain.entity.response.ErrorEntity
+import com.faris.domain.entity.response.currency.CurrencyEntity
 import com.faris.domain.usecases.CurrencyUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
@@ -23,6 +25,7 @@ class DetailsViewModel @Inject constructor(private val useCase: CurrencyUseCase)
     val loadingEvent = SingleLiveEvent<Boolean>()
     val errorEvent = SingleLiveEvent<ErrorEntity.Error?>()
     var items = ObservableArrayList<RateItemViewModel>()
+    var chartItems = MutableLiveData<ArrayList<CurrencyEntity.ConversionResult>>()
     val itemBinding: ItemBinding<RateItemViewModel> =
         ItemBinding.of(
             BR.viewModel,
@@ -42,9 +45,11 @@ class DetailsViewModel @Inject constructor(private val useCase: CurrencyUseCase)
             ).collect { result ->
                 when (result) {
                     is ResultState.Success -> {
+                        showLoading(false)
                         items.addAll(result.data.map {
                             RateItemViewModel(it, toCurrency)
                         })
+                        chartItems.value = ArrayList(result.data)
                     }
                     is ResultState.Error -> {
                         showLoading(false)

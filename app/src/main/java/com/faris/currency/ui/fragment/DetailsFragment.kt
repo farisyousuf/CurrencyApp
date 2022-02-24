@@ -8,9 +8,17 @@ import android.view.WindowManager
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import com.faris.currency.databinding.FragmentDetailsBinding
+import com.faris.domain.entity.response.currency.CurrencyEntity
+import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.data.LineData
+import com.github.mikephil.charting.data.LineDataSet
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @AndroidEntryPoint
 class DetailsFragment : Fragment() {
@@ -38,6 +46,36 @@ class DetailsFragment : Fragment() {
         binding.viewModel = viewModel
         binding.executePendingBindings()
         subscribeToEvents()
+        observeItems()
+    }
+
+    private fun observeItems() {
+        viewModel.chartItems.observe(viewLifecycleOwner) {
+            updateChart(it)
+        }
+    }
+
+    private fun updateChart(ratesResponseList: ArrayList<CurrencyEntity.ConversionResult>) {
+        lifecycleScope.launch(Dispatchers.Default) {
+            val entries = mutableListOf<Entry>()
+
+            for (ratesResponse in ratesResponseList) {
+                entries.add(
+                    Entry(
+                        entries.count().toFloat(),
+                        (ratesResponse.currencyListWithRates.find { it.code == args.toCurrency }?.rate ?: 0f).toFloat(),
+                        ratesResponse.fromCurrency
+                    )
+                )
+            }
+            val dataSet = LineDataSet(entries, args.toCurrency)
+            val lineData = LineData(dataSet)
+
+            withContext(Dispatchers.Main) {
+                binding.chart.data = lineData
+                binding.chart.invalidate()
+            }
+        }
     }
 
     private fun subscribeToEvents() {

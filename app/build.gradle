@@ -88,6 +88,9 @@ dependencies {
     implementation "me.tatarka.bindingcollectionadapter2:bindingcollectionadapter:$bindingCollectionVersion"
     implementation "me.tatarka.bindingcollectionadapter2:bindingcollectionadapter-recyclerview:$bindingCollectionVersion"
 
+    //Chart
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+
     testImplementation "junit:junit:$junitVersion"
     testImplementation "androidx.arch.core:core-testing:$archCoreTestVersion"
     testImplementation "org.mockito:mockito-core:$mockitoCoreVersion"
