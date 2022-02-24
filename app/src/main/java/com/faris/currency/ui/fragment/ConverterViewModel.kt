@@ -120,7 +120,7 @@ class ConverterViewModel @Inject constructor(private val currencyUseCase: Curren
         viewModelScope.launch {
             currencyUseCase.getCurrencyConversion(
                 fromCurrency,
-                toCurrency
+                listOf(toCurrency)
             ).collect { result ->
                 when (result) {
                     is ResultState.Success -> {

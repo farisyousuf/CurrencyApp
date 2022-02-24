@@ -22,17 +22,31 @@
             />
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvRates"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="0dp"
             app:itemBinding="@{viewModel.itemBinding}"
             app:items="@{viewModel.items}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/rvOtherRates"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/chart"
-            tools:itemCount="5"
+            tools:itemCount="3"
             tools:listitem="@layout/rates_item" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvOtherRates"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:itemBinding="@{viewModel.ratesItemBinding}"
+            app:items="@{viewModel.rateItems}"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/rvRates"
+            app:layout_constraintTop_toBottomOf="@id/chart"
+            tools:itemCount="5"
+            tools:listitem="@layout/other_rates_item" />
 
         <ProgressBar
             android:id="@+id/progressBar"

@@ -21,12 +21,16 @@ class CurrencyRepositoryImpl @Inject constructor(private val currencyApi: Curren
     CurrencyRepository {
     override fun getSupportedCurrencies(): Flow<ResultState<CurrencyEntity.CurrencyList>> = flow {
         val result = apiCall { currencyApi.getCurrencies().map() }
-        if(result is ResultState.Success) {
-            if(!result.data.isSuccess) {
-                emit(ResultState.Error(ErrorEntity.Error(
-                    errorCode = result.data.error?.errorCode,
-                    errorMessage = result.data.error?.errorMessage
-                )))
+        if (result is ResultState.Success) {
+            if (!result.data.isSuccess) {
+                emit(
+                    ResultState.Error(
+                        ErrorEntity.Error(
+                            errorCode = result.data.error?.errorCode,
+                            errorMessage = result.data.error?.errorMessage
+                        )
+                    )
+                )
             } else {
                 emit(result)
             }
@@ -35,21 +39,25 @@ class CurrencyRepositoryImpl @Inject constructor(private val currencyApi: Curren
 
     override fun getCurrencyConversion(
         fromCurrency: String,
-        toCurrency: String
+        toCurrency: List<String>
     ): Flow<ResultState<CurrencyEntity.ConversionResult>> = flow {
         val result = apiCall {
             currencyApi.convert(
                 date = Calendar.getInstance().time.serverFormattedDateString(),
                 from = fromCurrency,
-                to = toCurrency
+                to = toCurrency.joinToString(",") { it }
             ).map()
         }
-        if(result is ResultState.Success) {
-            if(!result.data.isSuccess) {
-                emit(ResultState.Error(ErrorEntity.Error(
-                    errorCode = result.data.error?.errorCode,
-                    errorMessage = result.data.error?.errorMessage
-                )))
+        if (result is ResultState.Success) {
+            if (!result.data.isSuccess) {
+                emit(
+                    ResultState.Error(
+                        ErrorEntity.Error(
+                            errorCode = result.data.error?.errorCode,
+                            errorMessage = result.data.error?.errorMessage
+                        )
+                    )
+                )
             } else {
                 emit(result)
             }
@@ -62,8 +70,13 @@ class CurrencyRepositoryImpl @Inject constructor(private val currencyApi: Curren
         toCurrency: String
     ): Flow<ResultState<List<CurrencyEntity.ConversionResult>>> = flow {
         val start = Calendar.getInstance()
-        start.add(Calendar.DATE, -days)
+        //Fixed issue where extra item was showing
+        start.add(Calendar.DATE, -days + 1)
+        start.set(Calendar.HOUR, 0)
+        start.set(Calendar.MINUTE, 0)
+        start.set(Calendar.SECOND, 0)
         val end = Calendar.getInstance()
+
         val results = arrayListOf<CurrencyEntity.ConversionResult>()
         while (start.before(end)) {
             val result = apiCall {

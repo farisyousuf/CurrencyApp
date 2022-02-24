@@ -29,7 +29,7 @@ class DetailsFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel.getHistory(args.fromCurrency, args.toCurrency)
+        viewModel.getData(args.fromCurrency, args.toCurrency)
     }
 
     override fun onCreateView(

@@ -29,8 +29,8 @@ android {
         jvmTarget = '1.8'
     }
     packagingOptions {
-        resources.excludes.add("META-INF/*")
-        resources.excludes.add("META-INF/data_debug.kotlin_module")
+        exclude 'META-INF/*'
+        exclude 'META-INF/*.kotlin_module'
     }
 }
 

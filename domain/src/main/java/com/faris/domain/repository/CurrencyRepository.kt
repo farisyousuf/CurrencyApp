@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
 interface CurrencyRepository {
     fun getSupportedCurrencies() : Flow<ResultState<CurrencyEntity.CurrencyList>>
 
-    fun getCurrencyConversion(fromCurrency: String, toCurrency: String) : Flow<ResultState<CurrencyEntity.ConversionResult>>
+    fun getCurrencyConversion(fromCurrency: String, toCurrency: List<String>) : Flow<ResultState<CurrencyEntity.ConversionResult>>
 
     fun getCurrencyConversionByDays(
         days: Int,

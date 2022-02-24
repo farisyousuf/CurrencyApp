@@ -9,7 +9,7 @@ interface CurrencyUseCase {
 
     fun getCurrencyConversion(
         fromCurrency: String,
-        toCurrency: String
+        toCurrency: List<String>
     ): Flow<ResultState<CurrencyEntity.ConversionResult>>
 
     fun getCurrencyConversionByDays(

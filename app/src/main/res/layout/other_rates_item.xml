@@ -7,7 +7,7 @@
 
         <variable
             name="viewModel"
-            type="com.faris.currency.ui.models.RateItemViewModel" />
+            type="com.faris.domain.entity.response.currency.CurrencyEntity.Currency" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -16,15 +16,15 @@
         android:padding="16dp">
 
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/tvDate"
+            android:id="@+id/tvCurrency"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:text="@{viewModel.getDateString()}"
+            android:text="@{viewModel.code}"
             android:textSize="15sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="Date" />
+            tools:text="AED" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tvRate"
@@ -32,11 +32,11 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="12dp"
-            android:text="@{viewModel.getToText()}"
-            android:textSize="15sp"
+            android:text="@{String.valueOf(viewModel.rate)}"
+            android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvDate"
-            tools:text="3x" />
+            app:layout_constraintTop_toBottomOf="@+id/tvCurrency"
+            tools:text="1.567" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
