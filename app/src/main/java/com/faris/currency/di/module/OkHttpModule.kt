@@ -2,6 +2,7 @@ package com.faris.currency.di.module
 
 import com.faris.currency.BuildConfig
 import com.faris.currency.config.Configuration
+import com.faris.currency.interceptors.HttpRequestInterceptor
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -16,10 +17,11 @@ import javax.inject.Singleton
 object OkHttpModule {
     @Singleton
     @Provides
-    fun provideOkHttpClient(httpLoggingInterceptor: HttpLoggingInterceptor): OkHttpClient {
+    fun provideOkHttpClient(httpLoggingInterceptor: HttpLoggingInterceptor, httpRequestInterceptor: HttpRequestInterceptor): OkHttpClient {
 
         return OkHttpClient.Builder()
             .addInterceptor(httpLoggingInterceptor)
+            .addInterceptor(httpRequestInterceptor)
             .connectTimeout(Configuration.CONNECTION_TIMEOUT, TimeUnit.SECONDS)
             .callTimeout(Configuration.CALL_TIMEOUT, TimeUnit.SECONDS)
             .readTimeout(Configuration.READ_TIMEOUT, TimeUnit.SECONDS)
@@ -37,4 +39,8 @@ object OkHttpModule {
             }
         }
     }
+
+    @Singleton
+    @Provides
+    fun provideHttpRequestInterceptor() = HttpRequestInterceptor()
 }
