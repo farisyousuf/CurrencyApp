@@ -89,7 +89,7 @@ class ConverterViewModelTest : BaseViewModelTest() {
             val dummyResult = getDummyConversionResult("AED", "USD")
             val flowCurrenciesRates = flowOf(ResultState.Success(dummyResult))
             Mockito.doReturn(flowCurrenciesRates).`when`(currencyUseCase)
-                .getCurrencyConversion("AED", "USD")
+                .getCurrencyConversion("AED", listOf("USD"))
             converterViewModel.convert(fromAmount.toString())
 
             val toAmount = converterViewModel.toAmount.getOrAwaitValueTest()
@@ -108,7 +108,7 @@ class ConverterViewModelTest : BaseViewModelTest() {
             val dummyResult = getDummyConversionResult("USD", "AED")
             val flowCurrenciesRates = flowOf(ResultState.Success(dummyResult))
             Mockito.doReturn(flowCurrenciesRates).`when`(currencyUseCase)
-                .getCurrencyConversion("USD", "AED")
+                .getCurrencyConversion("USD", listOf("AED"))
             converterViewModel.convert(toAmount.toString(), isToAmountChanged = true)
 
             val fromAmount = converterViewModel.fromAmount.getOrAwaitValueTest()
@@ -127,7 +127,7 @@ class ConverterViewModelTest : BaseViewModelTest() {
         val dummyResult = ResultState.Error<CurrencyEntity.ConversionResult>(getDummyError())
         val flowCurrenciesRates = flowOf(dummyResult)
         Mockito.doReturn(flowCurrenciesRates).`when`(currencyUseCase)
-            .getCurrencyConversion("USD", "AED")
+            .getCurrencyConversion("USD", listOf("AED"))
         converterViewModel.convert(toAmount.toString(), isToAmountChanged = true)
 
         val fromAmount = converterViewModel.fromAmount.getOrAwaitValueTest()

@@ -2,6 +2,7 @@ package com.faris.currency.ui.fragment
 
 import com.faris.currency.*
 import com.faris.currency.util.Constants.HISTORY_DATE_SIZE
+import com.faris.currency.util.Constants.getPopularCurrencies
 import com.faris.domain.common.ResultState
 import com.faris.domain.entity.response.currency.CurrencyEntity
 import com.faris.domain.usecases.CurrencyUseCase
@@ -30,52 +31,73 @@ class DetailsViewModelTest : BaseViewModelTest() {
 
     @Test
     fun `given conversion results when getHistory should return success`() = runBlockingMainTest {
-        val fromCurrency = "AED"
+        val fromCurrency = "EUR"
         val toCurrency = "AED"
         //GIVEN
-        val flowCurrencies = flowOf(ResultState.Success(getDummyConversionHistoryResult(fromCurrency, toCurrency)))
+        val flowCurrencies =
+            flowOf(ResultState.Success(getDummyConversionHistoryResult(fromCurrency, toCurrency)))
+        val currenciesList =
+            flowOf(ResultState.Success(getDummyConversionResult(fromCurrency, toCurrency)))
 
         //WHEN
-        Mockito.doReturn(flowCurrencies).`when`(currencyUseCase).getCurrencyConversionByDays(HISTORY_DATE_SIZE, fromCurrency, toCurrency)
+        Mockito.doReturn(flowCurrencies).`when`(currencyUseCase)
+            .getCurrencyConversionByDays(HISTORY_DATE_SIZE, fromCurrency, toCurrency)
+        Mockito.doReturn(currenciesList).`when`(currencyUseCase)
+            .getCurrencyConversion(fromCurrency, getPopularCurrencies())
 
-        viewModel.getHistory(fromCurrency, toCurrency)
+        viewModel.getData(fromCurrency, toCurrency)
         val rateHistoryList = viewModel.items
+        val otherRatesList = viewModel.rateItems
         //THEN
-        Truth.assertThat(rateHistoryList.size).isGreaterThan(1)
+        Truth.assertThat(rateHistoryList.size).isGreaterThan(0)
+        Truth.assertThat(otherRatesList.size).isGreaterThan(0)
     }
 
     @Test
-    fun `given conversion results when getHistory should populate chart list`() = runBlockingMainTest {
-        val fromCurrency = "AED"
-        val toCurrency = "AED"
-        //GIVEN
-        val flowCurrencies = flowOf(ResultState.Success(getDummyConversionHistoryResult(fromCurrency, toCurrency)))
+    fun `given conversion results when getHistory should populate chart list`() =
+        runBlockingMainTest {
+            val fromCurrency = "EUR"
+            val toCurrency = "AED"
+            //GIVEN
+            val flowCurrencies = flowOf(
+                ResultState.Success(
+                    getDummyConversionHistoryResult(
+                        fromCurrency,
+                        toCurrency
+                    )
+                )
+            )
+            val currenciesList =
+                flowOf(ResultState.Success(getDummyConversionResult(fromCurrency, toCurrency)))
 
-        //WHEN
-        Mockito.doReturn(flowCurrencies).`when`(currencyUseCase).getCurrencyConversionByDays(HISTORY_DATE_SIZE, fromCurrency, toCurrency)
+            //WHEN
+            Mockito.doReturn(flowCurrencies).`when`(currencyUseCase)
+                .getCurrencyConversionByDays(HISTORY_DATE_SIZE, fromCurrency, toCurrency)
+            Mockito.doReturn(currenciesList).`when`(currencyUseCase)
+                .getCurrencyConversion(fromCurrency, getPopularCurrencies())
 
-        viewModel.getHistory(fromCurrency, toCurrency)
-        val chartItems = viewModel.chartItems.getOrAwaitValueTest()
-        //THEN
-        Truth.assertThat(chartItems.size).isGreaterThan(1)
-    }
+            viewModel.getData(fromCurrency, toCurrency)
+            val chartItems = viewModel.chartItems.getOrAwaitValueTest()
+            //THEN
+            Truth.assertThat(chartItems.size).isGreaterThan(0)
+        }
 
     @Test
     fun `given error result when getHistory should return error`() = runBlockingMainTest {
         val fromCurrency = "AED"
         val toCurrency = "AED"
         //GIVEN
-        val flowCurrencies = flowOf(ResultState.Error<CurrencyEntity.ConversionResult>(getDummyError()))
+        val errorCurrencies =
+            flowOf<ResultState<CurrencyEntity.ConversionResult>>(ResultState.Error(getDummyError()))
 
         //WHEN
-        Mockito.doReturn(flowCurrencies).`when`(currencyUseCase).getCurrencyConversionByDays(HISTORY_DATE_SIZE, fromCurrency, toCurrency)
-
-        viewModel.getHistory(fromCurrency, toCurrency)
+        Mockito.doReturn(errorCurrencies).`when`(currencyUseCase)
+            .getCurrencyConversionByDays(HISTORY_DATE_SIZE, fromCurrency, toCurrency)
+        Mockito.doReturn(errorCurrencies).`when`(currencyUseCase)
+            .getCurrencyConversion(fromCurrency, getPopularCurrencies())
+        viewModel.getData(fromCurrency, toCurrency)
         val rateHistoryList = viewModel.items
         //THEN
         Truth.assertThat(rateHistoryList.size).isEqualTo(0)
-
-        val error = viewModel.errorEvent.getOrAwaitValueTest()
-        Truth.assertThat(error).isNotNull()
     }
 }
