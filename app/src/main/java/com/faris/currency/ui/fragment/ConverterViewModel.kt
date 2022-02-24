@@ -1,6 +1,5 @@
 package com.faris.currency.ui.fragment
 
-import android.text.format.DateFormat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -14,7 +13,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
@@ -40,14 +38,10 @@ class ConverterViewModel @Inject constructor(private val currencyUseCase: Curren
     private var _toAmount = MutableLiveData<String>()
     var toAmount: LiveData<String> = _toAmount
 
-    init {
-        getCurrencyList()
-    }
-
     /**
      * Initial call in viewModel to fetch the Currency List
      */
-    private fun getCurrencyList() {
+    fun getCurrencyList() {
         showLoading(true)
         viewModelScope.launch {
             currencyUseCase.getSupportedCurrencies().collect { result ->
@@ -94,7 +88,10 @@ class ConverterViewModel @Inject constructor(private val currencyUseCase: Curren
         if (fromCurrency == toCurrency
             || fromCurrency.isNullOrEmpty()
             || toCurrency.isNullOrEmpty()
-        ) return
+        ) {
+            resetAmount()
+            return
+        }
 
         val amount = amountString.toDoubleOrNull()
         if (amount == null) {
@@ -134,17 +131,13 @@ class ConverterViewModel @Inject constructor(private val currencyUseCase: Curren
                                 errorEvent.value = result.data.error
                                 return@collect
                             }
-                            if (isToAmount) {
-                                _fromAmount.value = getResultAmount(
-                                    result.data.currencyListWithRates.find { it.code == fromCurrency }?.rate,
-                                    amount
-                                )
-                            } else {
-                                _toAmount.value = getResultAmount(
-                                    result.data.currencyListWithRates.find { it.code == toCurrency }?.rate,
-                                    amount
-                                )
-                            }
+                            result.data.currencyListWithRates.find { it.code == toCurrency }?.rate?.let { rate ->
+                                if(isToAmount) {
+                                    _fromAmount.value = getResultAmount(rate, amount)
+                                } else {
+                                    _toAmount.value = getResultAmount(rate, amount)
+                                }
+                            } ?: clearAmounts()
                         } else {
                             clearAmounts()
                         }
@@ -172,9 +165,14 @@ class ConverterViewModel @Inject constructor(private val currencyUseCase: Curren
     /**
      * Clear the amount values
      */
-    fun clearAmounts() {
-        _fromAmount.value = ""
-        _toAmount.value = ""
+    private fun clearAmounts() {
+        setFromAmount("")
+        setToAmount("")
+    }
+
+    private fun resetAmount() {
+        setFromAmount("1")
+        setToAmount("1")
     }
 
     /**

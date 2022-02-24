@@ -22,6 +22,11 @@ buildscript {
         timberVersion = '4.7.1'
         okhttpLoggerVersion = '4.9.3'
         javaXVersion = '1'
+        bindingCollectionVersion = '4.0.0'
+        mockitoCoreVersion = '3.11.0'
+        testKotlinxCoroutines = '1.5.2'
+        archCoreTestVersion = '2.1.0'
+        truthVersion = '1.0.1'
     }
 }
 

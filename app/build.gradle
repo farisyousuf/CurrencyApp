@@ -38,6 +38,9 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+    packagingOptions {
+        resources.excludes.add("META-INF/*")
+    }
 }
 
 dependencies {
@@ -82,10 +85,15 @@ dependencies {
     implementation "com.squareup.okhttp3:logging-interceptor:$okhttpLoggerVersion"
 
     //Binding Adapter
-    implementation 'me.tatarka.bindingcollectionadapter2:bindingcollectionadapter:4.0.0'
-    implementation 'me.tatarka.bindingcollectionadapter2:bindingcollectionadapter-recyclerview:4.0.0'
+    implementation "me.tatarka.bindingcollectionadapter2:bindingcollectionadapter:$bindingCollectionVersion"
+    implementation "me.tatarka.bindingcollectionadapter2:bindingcollectionadapter-recyclerview:$bindingCollectionVersion"
 
     testImplementation "junit:junit:$junitVersion"
+    testImplementation "androidx.arch.core:core-testing:$archCoreTestVersion"
+    testImplementation "org.mockito:mockito-core:$mockitoCoreVersion"
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$testKotlinxCoroutines"
+    testImplementation "com.google.truth:truth:$truthVersion"
+
     androidTestImplementation "androidx.test.ext:junit:$junitExtVersion"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espressoCoreVersion"
 }

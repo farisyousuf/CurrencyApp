@@ -20,20 +20,10 @@ class ConverterFragment : Fragment() {
     private val binding get() = _binding!!
     private val viewModel: ConverterViewModel by viewModels()
 
-    private fun clearAmounts() {
-        hideKeyboard(requireActivity())
-        viewModel.clearAmounts()
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel.getCurrencyList()
     }
-
-    private fun setDefaultCurrencyToFrom() {
-        val defaultPosition =
-            viewModel.currencyList.value?.indexOfFirst { currency -> currency.code == DEFAULT_CURRENCY }
-                .takeIf { index -> index != -1 }
-        defaultPosition?.let {
-            binding.spFromCurrency.setSelection(it)
-        }
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -173,6 +163,15 @@ class ConverterFragment : Fragment() {
                     toCurrency = viewModel.toCurrency.value?.code ?: ""
                 )
             )
+        }
+    }
+
+    private fun setDefaultCurrencyToFrom() {
+        val defaultPosition =
+            viewModel.currencyList.value?.indexOfFirst { currency -> currency.code == DEFAULT_CURRENCY }
+                .takeIf { index -> index != -1 }
+        defaultPosition?.let {
+            binding.spFromCurrency.setSelection(it)
         }
     }
 
