@@ -14,4 +14,10 @@ interface CurrencyApi {
         @Query("base") from: String,
         @Query("symbols") to: String,
     ): CurrencyDto.ConversionResultDto
+
+    @GET("latest")
+    suspend fun convertLatest(
+        @Query("base") from: String,
+        @Query("symbols") to: String,
+    ): CurrencyDto.ConversionResultDto
 }

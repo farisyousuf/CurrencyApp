@@ -1,9 +1,7 @@
 package com.faris.data.repository
 
-import android.text.format.DateFormat
 import com.faris.data.mapper.dtotoentity.map
 import com.faris.data.remote.api.CurrencyApi
-import com.faris.data.util.Constants.SERVER_DATE_FORMAT
 import com.faris.data.util.serverFormattedDateString
 import com.faris.domain.common.ResultState
 import com.faris.domain.entity.response.ErrorEntity
@@ -42,8 +40,7 @@ class CurrencyRepositoryImpl @Inject constructor(private val currencyApi: Curren
         toCurrency: List<String>
     ): Flow<ResultState<CurrencyEntity.ConversionResult>> = flow {
         val result = apiCall {
-            currencyApi.convert(
-                date = Calendar.getInstance().time.serverFormattedDateString(),
+            currencyApi.convertLatest(
                 from = fromCurrency,
                 to = toCurrency.joinToString(",") { it }
             ).map()
@@ -81,7 +78,7 @@ class CurrencyRepositoryImpl @Inject constructor(private val currencyApi: Curren
         while (start.before(end)) {
             val result = apiCall {
                 currencyApi.convert(
-                    date = "${DateFormat.format(SERVER_DATE_FORMAT, start.time)}",
+                    date = start.time.serverFormattedDateString(),
                     from = fromCurrency,
                     to = toCurrency.joinToString(",") {it}
                 )
