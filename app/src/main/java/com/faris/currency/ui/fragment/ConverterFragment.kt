@@ -83,7 +83,6 @@ class ConverterFragment : Fragment() {
             ).apply {
                 setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             }
-            setDefaultCurrencyToFrom()
 
             binding.spToCurrency.onItemSelected { position ->
                 viewModel.currencyList.value?.let { currencyList ->
@@ -163,21 +162,9 @@ class ConverterFragment : Fragment() {
         }
     }
 
-    private fun setDefaultCurrencyToFrom() {
-        val defaultPosition =
-            viewModel.currencyList.value?.indexOfFirst { currency -> currency.code == DEFAULT_CURRENCY }
-                .takeIf { index -> index != -1 }
-        defaultPosition?.let {
-            binding.spFromCurrency.setSelection(it)
-        }
-    }
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
 
-    companion object {
-        private const val DEFAULT_CURRENCY = "EUR"
-    }
 }

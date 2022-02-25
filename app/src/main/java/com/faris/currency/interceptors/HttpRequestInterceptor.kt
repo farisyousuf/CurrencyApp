@@ -25,7 +25,6 @@ class HttpRequestInterceptor : Interceptor {
     }
 
     companion object {
-//        private const val API_KEY = "ccad955f906284ea70951f4bc455c478"
-        private const val API_KEY = "075c9696b3dae829f9b72c599c1a124b"
+        private const val API_KEY = "e6f3f88042886f7521b3b5f226db128f"
     }
 }

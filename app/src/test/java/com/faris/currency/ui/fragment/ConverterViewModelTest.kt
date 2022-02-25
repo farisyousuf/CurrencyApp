@@ -1,6 +1,7 @@
 package com.faris.currency.ui.fragment
 
 import com.faris.currency.*
+import com.faris.currency.util.Constants.BASE_CURRENCY
 import com.faris.domain.common.ResultState
 import com.faris.domain.entity.response.currency.CurrencyEntity
 import com.faris.domain.usecases.CurrencyUseCase
@@ -89,7 +90,7 @@ class ConverterViewModelTest : BaseViewModelTest() {
             val dummyResult = getDummyConversionResult("AED", "USD")
             val flowCurrenciesRates = flowOf(ResultState.Success(dummyResult))
             Mockito.doReturn(flowCurrenciesRates).`when`(currencyUseCase)
-                .getCurrencyConversion("EUR", listOf("AED", "USD"))
+                .getCurrencyConversion(BASE_CURRENCY, listOf("AED", "USD"))
             converterViewModel.convert(fromAmount.toString())
 
             val toAmount = converterViewModel.toAmount.getOrAwaitValueTest()
@@ -106,7 +107,7 @@ class ConverterViewModelTest : BaseViewModelTest() {
             val dummyResult = getDummyConversionResult("USD", "AED")
             val flowCurrenciesRates = flowOf(ResultState.Success(dummyResult))
             Mockito.doReturn(flowCurrenciesRates).`when`(currencyUseCase)
-                .getCurrencyConversion("EUR", listOf("USD", "AED"))
+                .getCurrencyConversion(BASE_CURRENCY, listOf("USD", "AED"))
             converterViewModel.convert(toAmount.toString(), isToAmountChanged = true)
 
             val fromAmount = converterViewModel.fromAmount.getOrAwaitValueTest()
@@ -122,7 +123,7 @@ class ConverterViewModelTest : BaseViewModelTest() {
         val dummyResult = ResultState.Error<CurrencyEntity.ConversionResult>(getDummyError())
         val flowCurrenciesRates = flowOf(dummyResult)
         Mockito.doReturn(flowCurrenciesRates).`when`(currencyUseCase)
-            .getCurrencyConversion("EUR", listOf("USD", "AED"))
+            .getCurrencyConversion(BASE_CURRENCY, listOf("USD", "AED"))
         converterViewModel.convert(toAmount.toString(), isToAmountChanged = true)
 
         val fromAmount = converterViewModel.fromAmount.getOrAwaitValueTest()

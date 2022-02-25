@@ -1,6 +1,7 @@
 package com.faris.currency.ui.fragment
 
 import com.faris.currency.*
+import com.faris.currency.util.Constants.BASE_CURRENCY
 import com.faris.currency.util.Constants.HISTORY_DATE_SIZE
 import com.faris.domain.common.ResultState
 import com.faris.domain.entity.response.currency.CurrencyEntity
@@ -40,10 +41,10 @@ class DetailsViewModelTest : BaseViewModelTest() {
 
         //WHEN
         Mockito.doReturn(flowCurrencies).`when`(currencyUseCase)
-            .getCurrencyConversionByDays(HISTORY_DATE_SIZE, "EUR", listOf(fromCurrency, toCurrency))
+            .getCurrencyConversionByDays(HISTORY_DATE_SIZE, BASE_CURRENCY, listOf(fromCurrency, toCurrency))
         Mockito.doReturn(currenciesList).`when`(currencyUseCase)
             .getCurrencyConversion(
-                "EUR",
+                BASE_CURRENCY,
                 getFinalPopularCurrencyListTestData(fromCurrency, toCurrency)
             )
 
@@ -73,10 +74,10 @@ class DetailsViewModelTest : BaseViewModelTest() {
                 flowOf(ResultState.Success(getDummyConversionResult(fromCurrency, toCurrency)))
             //WHEN
             Mockito.doReturn(flowCurrencies).`when`(currencyUseCase)
-                .getCurrencyConversionByDays(HISTORY_DATE_SIZE, "EUR", listOf(fromCurrency, toCurrency))
+                .getCurrencyConversionByDays(HISTORY_DATE_SIZE, BASE_CURRENCY, listOf(fromCurrency, toCurrency))
             Mockito.doReturn(currenciesList).`when`(currencyUseCase)
                 .getCurrencyConversion(
-                    "EUR",
+                    BASE_CURRENCY,
                     getFinalPopularCurrencyListTestData(fromCurrency, toCurrency)
                 )
 
@@ -96,9 +97,9 @@ class DetailsViewModelTest : BaseViewModelTest() {
 
         //WHEN
         Mockito.doReturn(errorCurrencies).`when`(currencyUseCase)
-            .getCurrencyConversionByDays(HISTORY_DATE_SIZE, "EUR", listOf(fromCurrency, toCurrency))
+            .getCurrencyConversionByDays(HISTORY_DATE_SIZE, BASE_CURRENCY, listOf(fromCurrency, toCurrency))
         Mockito.doReturn(errorCurrencies).`when`(currencyUseCase)
-            .getCurrencyConversion("EUR", getFinalPopularCurrencyListTestData(fromCurrency, toCurrency))
+            .getCurrencyConversion(BASE_CURRENCY, getFinalPopularCurrencyListTestData(fromCurrency, toCurrency))
         viewModel.getData(fromCurrency, toCurrency)
         val rateHistoryList = viewModel.items
         //THEN

@@ -8,6 +8,7 @@ import com.faris.currency.BR
 import com.faris.currency.R
 import com.faris.currency.arc.SingleLiveEvent
 import com.faris.currency.ui.models.RateItemViewModel
+import com.faris.currency.util.Constants.BASE_CURRENCY
 import com.faris.currency.util.Constants.HISTORY_DATE_SIZE
 import com.faris.currency.util.Constants.getPopularCurrencies
 import com.faris.currency.util.CurrencyUtil
@@ -55,10 +56,10 @@ class DetailsViewModel @Inject constructor(private val useCase: CurrencyUseCase)
         viewModelScope.launch {
             useCase.getCurrencyConversionByDays(
                 HISTORY_DATE_SIZE,
-                "EUR",
+                BASE_CURRENCY,
                 listOf(fromCurrency, toCurrency)
             ).combine(
-                useCase.getCurrencyConversion("EUR", currencies)
+                useCase.getCurrencyConversion(BASE_CURRENCY, currencies)
             ) { historyData, otherRates ->
                 when (historyData) {
                     is ResultState.Success -> {

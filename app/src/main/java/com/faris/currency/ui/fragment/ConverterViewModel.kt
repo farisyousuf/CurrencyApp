@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.faris.currency.arc.SingleLiveEvent
+import com.faris.currency.util.Constants.BASE_CURRENCY
 import com.faris.currency.util.CurrencyUtil
 import com.faris.domain.common.ResultState
 import com.faris.domain.entity.response.ErrorEntity
@@ -123,7 +124,7 @@ class ConverterViewModel @Inject constructor(private val currencyUseCase: Curren
         //based on its results
         viewModelScope.launch {
             currencyUseCase.getCurrencyConversion(
-                "EUR",
+                BASE_CURRENCY,
                 listOf(fromCurrency, toCurrency)
             ).collect { result ->
                 when (result) {
