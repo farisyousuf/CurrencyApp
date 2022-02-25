@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.faris.currency.databinding.FragmentConverterBinding
+import com.faris.currency.util.Constants
 import com.faris.currency.util.extensions.onImeActionDone
 import com.faris.currency.util.extensions.onItemSelected
 import dagger.hilt.android.AndroidEntryPoint
@@ -83,7 +84,7 @@ class ConverterFragment : Fragment() {
             ).apply {
                 setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             }
-
+            setDefaultCurrencyToFrom()
             binding.spToCurrency.onItemSelected { position ->
                 viewModel.currencyList.value?.let { currencyList ->
                     val selectedCurrency = currencyList[position]
@@ -159,6 +160,15 @@ class ConverterFragment : Fragment() {
                     toCurrency = viewModel.toCurrency.value?.code ?: ""
                 )
             )
+        }
+    }
+
+    private fun setDefaultCurrencyToFrom() {
+        val defaultPosition =
+            viewModel.currencyList.value?.indexOfFirst { currency -> currency.code == Constants.BASE_CURRENCY }
+                .takeIf { index -> index != -1 }
+        defaultPosition?.let {
+            binding.spFromCurrency.setSelection(it)
         }
     }
 
